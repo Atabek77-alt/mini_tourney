@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from app.api.tournament import router as tournament_router
+from app.api.tournament import router
 
-app = FastAPI(title="Mini Tournament System")
-
-app.include_router(tournament_router, prefix="/tournaments")
+app = FastAPI()
+app.include_router(router)

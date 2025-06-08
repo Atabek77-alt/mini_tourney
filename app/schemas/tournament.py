@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 from datetime import datetime
-
+from typing import List
 
 class TournamentCreate(BaseModel):
     name: str
@@ -8,15 +8,18 @@ class TournamentCreate(BaseModel):
     start_at: datetime
 
 
+
+
+
 class TournamentRead(BaseModel):
     id: int
     name: str
     max_players: int
     start_at: datetime
-    registered_players: int
+    registered_players: List[PlayerRead] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
 
 
 class PlayerRegister(BaseModel):
@@ -29,5 +32,4 @@ class PlayerRead(BaseModel):
     name: str
     email: EmailStr
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

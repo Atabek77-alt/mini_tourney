@@ -1,22 +1,30 @@
-from fastapi import APIRouter, Depends
-from app.services.tournament import TournamentService
-from app.repositories.tournament import TournamentRepository
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.db import get_db
-from app.schemas import TournamentCreate, PlayerRegister
+from app.schemas.tournament import (
+    TournamentCreate, TournamentRead,
+    PlayerRegister, PlayerRead
+)
+from app.services.tournament import (
+    create_tournament as service_create_tournament,
+    register_player as service_register_player
+)
 
-router = APIRouter(prefix="/tournaments")
+router = APIRouter()
 
-@router.post("/")
-async def create_tournament(data: TournamentCreate, db=Depends(get_db)):
-    repo = TournamentRepository(db)
-    return await repo.create_tournament(data.dict())
 
-@router.post("/{tournament_id}/register")
-async def register_player(
+@router.post("/tournaments", response_model=TournamentRead)
+async def create_tournament_endpoint(
+    tournament: TournamentCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    return await service_create_tournament(db, tournament)
+
+
+@router.post("/tournaments/{tournament_id}/register", response_model=PlayerRead)
+async def register_player_endpoint(
     tournament_id: int,
     player: PlayerRegister,
-    db=Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
-    repo = TournamentRepository(db)
-    service = TournamentService(repo)
-    return await service.register_player(tournament_id, player.dict())
+    return await service_register_player(db, tournament_id, player)

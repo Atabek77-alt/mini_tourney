@@ -11,17 +11,6 @@ class TournamentCreate(BaseModel):
 
 
 
-class TournamentRead(BaseModel):
-    id: int
-    name: str
-    max_players: int
-    start_at: datetime
-    registered_players: List[PlayerRead] = []
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-
 class PlayerRegister(BaseModel):
     name: str
     email: EmailStr
@@ -31,5 +20,15 @@ class PlayerRead(BaseModel):
     id: int
     name: str
     email: EmailStr
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TournamentRead(BaseModel):
+    id: int
+    name: str
+    max_players: int
+    start_at: datetime
+    registered_players: List[PlayerRead] = []
 
     model_config = ConfigDict(from_attributes=True)

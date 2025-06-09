@@ -3,7 +3,7 @@ uvicorn
 sqlalchemy[asyncio]
 asyncpg
 alembic
-pydantic
+pydantic[email]
 pytest
 mypy
 black

@@ -1,5 +1,6 @@
-/.env
-/venv
-/config.py
+.env
+venv/
+app/config.py
+.idea
 
 
